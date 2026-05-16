@@ -2,6 +2,9 @@
   command = "npm run build"
   publish = "dist"
 
+[functions]
+  deno_import_map = "netlify/edge-functions/import_map.json"
+
 [[edge_functions]]
   path     = "/api/availability"
   function = "availability"

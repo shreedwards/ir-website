@@ -1,4 +1,4 @@
-import ICAL from 'npm:ical.js'
+import ICAL from 'ical.js'
 
 export default async function handler(request, _context) {
   if (request.method === 'OPTIONS') {
