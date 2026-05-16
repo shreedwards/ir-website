@@ -10,62 +10,70 @@ const navLinks = [
   { label: 'About',   href: '/about.html' },
   { label: 'Gallery', href: '#top' },
   { label: 'Booking', href: '/#booking' },
-  { label: 'Contact', href: '/#contact' },
 ]
+
+const allPhotos = import.meta.glob('./assets/photography/**/*.webp', { eager: true, import: 'default' })
+const p = (path) => allPhotos[`./assets/photography/${path}`]
+
+const heroImg = p('patio/sunset.webp')
 
 const sections = [
   {
     id: 'bedrooms',
     title: 'Bedrooms',
     photos: [
-      { name: 'Master Bedroom',       src: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600&auto=format&fit=crop&q=80' },
-      { name: 'Master Bedroom Detail', src: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Guest Bedroom 1',       src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Guest Bedroom 2',       src: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Bedroom Linens',        src: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1200&auto=format&fit=crop&q=80' },
+      { name: 'Master Bedroom',       src: p('bedrooms/main-1.webp') },
+      { name: 'Master Bedroom',       src: p('bedrooms/main-2.webp') },
+      { name: 'Guest Bedroom',        src: p('bedrooms/guest-a.webp') },
+      { name: 'Twin Bedroom',         src: p('bedrooms/guest-b-1.webp') },
+      { name: 'Twin Bedroom',         src: p('bedrooms/guest-b-2.webp') },
     ],
   },
   {
     id: 'bathrooms',
     title: 'Bathrooms',
     photos: [
-      { name: 'Master En-suite',  src: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1600&auto=format&fit=crop&q=80' },
-      { name: 'Rainfall Shower',  src: 'https://images.unsplash.com/photo-1620626011761-996317702b6f?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Guest Bathroom',   src: 'https://images.unsplash.com/photo-1604709177225-055f99402ea3?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Vanity Detail',    src: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=1200&auto=format&fit=crop&q=80' },
-    ],
-  },
-  {
-    id: 'kitchen',
-    title: 'Kitchen',
-    photos: [
-      { name: 'Kitchen Overview', src: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&auto=format&fit=crop&q=80' },
-      { name: 'Dining Area',      src: 'https://images.unsplash.com/photo-1617098474202-0d0d7f60ed8e?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Kitchen Counter',  src: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Bush Braai Setup', src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&auto=format&fit=crop&q=80' },
+      { name: 'Master En-Suite', src: p('bathrooms/main.webp') },
+      { name: 'En-Suite Vanity', src: p('bathrooms/guest-c.webp') },
     ],
   },
   {
     id: 'living',
-    title: 'Living Areas',
+    title: 'Living Spaces',
     photos: [
-      { name: 'Main Lounge',        src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format&fit=crop&q=80' },
-      { name: 'Living Room',        src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Lounge Seating',     src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Indoor Dining',      src: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Entertainment Area', src: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&auto=format&fit=crop&q=80' },
+      { name: 'Open-Plan Living',    src: p('open-space/dining-room-1.webp') },
+      { name: 'Dining Area',         src: p('open-space/dining-room-2.webp') },
+      { name: 'Entrance Hall',       src: p('open-space/entrance.webp') },
+      { name: 'Lounge',              src: p('open-space/lounge.webp') },
+      { name: 'Indoor/Outdoor Flow', src: p('open-space/patio-exit.webp') },
     ],
   },
   {
     id: 'patio-pool',
     title: 'Patio & Pool',
     photos: [
-      { name: 'Infinity Pool',     src: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1600&auto=format&fit=crop&q=80' },
-      { name: 'Pool Deck',         src: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Bush Views',        src: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Outdoor Seating',   src: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Evening on the Deck', src: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1200&auto=format&fit=crop&q=80' },
-      { name: 'Sundowner Views',   src: 'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=1200&auto=format&fit=crop&q=80' },
+      { name: 'Infinity Pool',      src: p('patio/pool.webp') },
+      { name: 'Fire Pit at Sunset', src: p('patio/sunset.webp') },
+      { name: 'Covered Patio',      src: p('patio/indoor-1.webp') },
+      { name: 'Evening Patio',      src: p('patio/indoor-2.webp') },
+      { name: 'Property Exterior',  src: p('patio/front-view.webp') },
+      { name: 'Weber Braai',        src: p('patio/braai.webp') },
+      { name: 'Fire Pit',           src: p('patio/firepit.webp') },
+    ],
+  },
+  {
+    id: 'wildlife',
+    title: 'Nature & Wildlife',
+    photos: [
+      { name: 'Zebras at the Pool', src: p('nature/zebra-drinking.webp') },
+      { name: 'Zebra Visitors',     src: p('nature/zebra.webp') },
+      { name: 'Wildebeest',         src: p('nature/wildebeest.webp') },
+      { name: 'Kudu Bull',          src: p('nature/kudu-bull.webp') },
+      { name: 'Kudu & Warthog',     src: p('nature/kudu-warthog.webp') },
+      { name: 'Bush Sunset',        src: p('nature/sunset-late.webp') },
+      { name: 'Golden Hour',        src: p('nature/sunset-early.webp') },
+      { name: 'Full Moon',          src: p('nature/night-sky.webp') },
+      { name: 'Bush Surroundings',  src: p('nature/knob-thorn.webp') },
     ],
   },
 ]
@@ -104,7 +112,7 @@ onUnmounted(() => {
   </nav>
 
   <!-- PAGE HEADER -->
-  <header id="top" class="gallery-page-header">
+  <header id="top" class="gallery-page-header" :style="{ '--hero-img': `url(${heroImg})` }">
     <div class="gallery-header-content">
       <p class="hero-eyebrow">Visual Journey</p>
       <h1 class="gallery-page-title"><em>Gallery</em></h1>
@@ -134,7 +142,7 @@ onUnmounted(() => {
       <div class="photo-grid">
         <div
           v-for="(photo, i) in section.photos"
-          :key="photo.name"
+          :key="photo.name + i"
           class="photo-tile"
           :class="tileClass(i)"
           @click="openLightbox(photo)"
@@ -170,7 +178,7 @@ onUnmounted(() => {
   min-height: 360px;
   background:
     linear-gradient(to bottom, rgba(28,18,10,.45) 0%, rgba(28,18,10,.65) 100%),
-    url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1800&auto=format&fit=crop&q=80') center/cover no-repeat;
+    var(--hero-img) center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -350,7 +358,6 @@ onUnmounted(() => {
 @media (max-width: 900px) {
   .photo-section { padding: 60px 24px; }
   .photo-grid { grid-auto-rows: 220px; }
-  .back-strip { padding: 48px 24px; }
 }
 
 @media (max-width: 600px) {

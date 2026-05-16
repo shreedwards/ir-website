@@ -1,6 +1,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import SiteFooter from '@/components/SiteFooter.vue'
+import AvailabilityCalendar from '@/components/AvailabilityCalendar.vue'
+import imgPool    from '@/assets/photography/patio/pool.webp'
+import imgMaster  from '@/assets/photography/bedrooms/main-1.webp'
+import imgLiving  from '@/assets/photography/open-space/dining-room-1.webp'
+import imgZebras  from '@/assets/photography/nature/zebra-drinking.webp'
 
 const scrolled = ref(false)
 
@@ -37,22 +42,18 @@ const reviews = [
 ]
 
 const galleryCards = [
-  {
-    title: 'The Infinity Pool',
-    img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop&q=80',
-  },
-  {
-    title: 'Master Bedroom',
-    img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700&auto=format&fit=crop&q=80',
-  },
-  {
-    title: 'Open Living Area',
-    img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&auto=format&fit=crop&q=80',
-  },
-  {
-    title: 'Bush Views & Deck',
-    img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=700&auto=format&fit=crop&q=80',
-  },
+  { title: 'The Infinity Pool',    img: imgPool },
+  { title: 'Master Bedroom',       img: imgMaster },
+  { title: 'Open Living Area',     img: imgLiving },
+  { title: 'Wildlife at the Pool', img: imgZebras },
+]
+
+// Add iCal export URLs from your booking platforms (Airbnb, Booking.com, LekkeSlaap, etc.)
+// Each platform provides an "Export calendar" or "iCal" link in your listing's calendar settings.
+// Note: most platform iCal URLs require a server-side proxy to avoid CORS errors.
+const calendarIcsUrls = [
+  // 'https://www.airbnb.com/calendar/ical/YOUR_LISTING_ID.ics',
+  // 'https://ical.booking.com/v1/export?t=YOUR_TOKEN',
 ]
 
 const handleScroll = () => { scrolled.value = window.scrollY > 60 }
@@ -211,16 +212,16 @@ onUnmounted(() => {
         <div class="booking-links reveal" style="transition-delay:.15s">
           <p class="contact-label" style="margin-bottom:20px">Book via</p>
           <div class="booking-grid">
-            <a href="#" class="booking-card">Booking.com</a>
-            <a href="#" class="booking-card">LekkeSlaap</a>
-            <a href="#" class="booking-card">Airbnb</a>
+            <a href="https://www.booking.com/hotel/za/ingonyama-rest-marloth-park1.html" class="booking-card">Booking.com</a>
+            <a href="https://lks.io/UmTJu312" class="booking-card">LekkeSlaap</a>
+            <a href="https://www.airbnb.com/rooms/1331854868811267063?check_in=2026-05-16&check_out=2026-05-21&guests=1&adults=1&s=67&unique_share_id=4bb29d74-b6ab-4772-8463-d5e5bdf6fba2" class="booking-card">Airbnb</a>
           </div>
         </div>
       </div>
 
       <div class="calendar-block reveal">
         <p class="contact-label" style="margin-bottom:20px">Availability</p>
-        <div class="calendar-placeholder"></div>
+        <AvailabilityCalendar :ics-urls="calendarIcsUrls" />
       </div>
     </div>
   </section>

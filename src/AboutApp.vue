@@ -14,7 +14,7 @@ const navLinks = [
 const propertyStats = [
   { figure: '6',     label: 'Guests' },
   { figure: '3',     label: 'Bedrooms' },
-  { figure: '3+1',   label: 'Bathrooms' },
+  { figure: '3½',   label: 'Bathrooms' },
   { figure: 'Pool',  label: 'Infinity Edge' },
   { figure: 'A/C',   label: 'Every Room' },
   { figure: 'Solar', label: 'Power Backup' },
@@ -66,6 +66,18 @@ const amenityGroups = [
       { name: 'Grooming',        desc: 'Hairdryer located in the main bedroom.' },
     ],
   },
+]
+
+const houseRules = [
+  { name: 'Night Safety',     desc: 'Do not walk around outside after dark (between sunset and sunrise) due to predators in the area.' },
+  { name: 'Door Security',    desc: 'Keep doors locked when you are not actively present in a room, as baboons can open unlocked doors and cause significant damage.' },
+  { name: 'Window Safety',    desc: 'Ensure windows are closed when you are out to prevent baboons from entering.' },
+  { name: 'No Hand-Feeding',  desc: 'Do not hand-feed any animals, particularly those with horns.' },
+  { name: 'Animal Feed',      desc: 'Purchase suitable animal feed and fodder only at the Marloth shopping centres.' },
+  { name: 'Animal Distance',  desc: 'Maintain a respectable distance from animals; they are habituated to humans but remain wild and undomesticated.' },
+  { name: 'Noise Levels',     desc: 'Keep noise levels low and avoid loud music or parties, as sound travels easily in the bush.' },
+  { name: 'No Pets',          desc: 'Strictly no pets are allowed on the premises.' },
+  { name: 'Check-In Process', desc: 'Sign the Ingonyama Rest Conditions & Policies document and pay the security deposit before the handover of keys.' },
 ]
 
 const attractionZones = [
@@ -158,7 +170,7 @@ onUnmounted(() => {
       </div>
 
       <div class="desc-body reveal" style="transition-delay:.1s">
-        <p>Ingonyama Rest is a self-catering home sleeping 6 individuals. The house is a free-standing home in the bush complete with your own patio, pool and surrounding garden.</p>
+        <p>Ingonyama Rest is a self-catering home sleeping 6 individuals. The house is a free-standing home in the bush complete with a patio, pool and surrounding garden.</p>
         <p>There are 3 bedrooms, each en-suite plus a separate guest toilet, fully equipped kitchen and scullery with a dishwasher and washing machine. The open-plan living room with elevated ceilings leads out to the indoor/outdoor patio and infinity-edge pool.</p>
         <p>The main bedroom has a queen-size bed, the other two rooms having two single beds each. Every room is air-conditioned with additional ceiling fans in each living area and bedrooms.</p>
       </div>
@@ -238,6 +250,30 @@ onUnmounted(() => {
               <p class="attr-desc">{{ item.desc }}</p>
             </div>
           </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOUSE RULES -->
+  <section class="rules-section section-pad">
+    <div class="rules-inner">
+
+      <div class="rules-head reveal">
+        <p class="section-label" style="color:var(--ember)">Before You Arrive</p>
+        <h2 class="page-h2 light">House Rules</h2>
+      </div>
+
+      <div class="rules-grid">
+        <div
+          v-for="(rule, i) in houseRules"
+          :key="rule.name"
+          class="attr-card reveal"
+          :style="`transition-delay:${i * .07}s`"
+        >
+          <div class="attr-name">{{ rule.name }}</div>
+          <p class="attr-desc">{{ rule.desc }}</p>
         </div>
       </div>
 
@@ -565,6 +601,38 @@ onUnmounted(() => {
   font-weight: 300;
 }
 
+/* ── HOUSE RULES SECTION ─────────────────────────────── */
+.rules-section {
+  background: var(--bark);
+  position: relative;
+  overflow: hidden;
+}
+.rules-section::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,130,74,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.rules-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rules-head {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
 /* ── CTA STRIP ───────────────────────────────────────── */
 .cta-strip {
   background: var(--bark);
@@ -625,6 +693,7 @@ onUnmounted(() => {
   .amenity-groups { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
   .zones-grid { grid-template-columns: 1fr; gap: 40px; }
   .zone-head { margin-bottom: 20px; }
+  .rules-grid { grid-template-columns: 1fr; }
   .cta-strip { padding: 80px 24px; }
 }
 
