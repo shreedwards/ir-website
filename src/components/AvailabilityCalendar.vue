@@ -1,14 +1,9 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-
-const props = defineProps({
-  icsUrls: { type: Array, default: () => [] },
-})
+import { ref, computed, watch, onMounted } from 'vue'
 
 const DOW   = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
-// Anchor today once — never changes during the session
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const todayStr = fmt(today)
@@ -19,6 +14,9 @@ const viewMonth = ref(today.getMonth())
 const blockedDates = ref(new Set())
 const loading      = ref(false)
 const error        = ref(null)
+
+// Tracks which "YYYY-MM" keys have already been fetched so navigation never re-requests them.
+const fetched = new Set()
 
 // ── Navigation ────────────────────────────────────────
 
@@ -64,98 +62,53 @@ const calDays = computed(() => {
   return cells
 })
 
-// ── ICS fetch + parse ─────────────────────────────────
+// ── API fetch ─────────────────────────────────────────
 
-async function load() {
-  if (!props.icsUrls.length) return
+async function loadMonth(year, month) {
+  const key = `${year}-${String(month + 1).padStart(2, '0')}`
+  if (fetched.has(key)) return
+  fetched.add(key)
+
   loading.value = true
   error.value   = null
-  const merged  = new Set()
+
+  const mm       = String(month + 1).padStart(2, '0')
+  const lastDay  = new Date(year, month + 1, 0).getDate()
+  const startDate = `${year}-${mm}-01`
+  const endDate   = `${year}-${mm}-${String(lastDay).padStart(2, '0')}`
 
   try {
-    await Promise.all(props.icsUrls.map(async (url) => {
-      const res = await fetch(url)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      for (const d of parseICS(await res.text())) merged.add(d)
-    }))
+    const res = await fetch(`/api/availability?start_date=${startDate}&end_date=${endDate}`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+
+    const merged = new Set(blockedDates.value)
+    for (const { date, booked } of data) {
+      if (booked) merged.add(date)
+    }
     blockedDates.value = merged
   } catch (e) {
     error.value = 'Live availability could not be loaded — please contact us to confirm dates.'
     console.error('[AvailabilityCalendar]', e)
+    fetched.delete(key) // allow retry on next navigation
   } finally {
     loading.value = false
   }
 }
 
-function parseICS(text) {
-  const blocked = new Set()
-
-  // Normalize + unfold continuation lines
-  const lines = []
-  for (const raw of text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n')) {
-    if ((raw.startsWith(' ') || raw.startsWith('\t')) && lines.length) {
-      lines[lines.length - 1] += raw.slice(1)
-    } else {
-      lines.push(raw)
-    }
-  }
-
-  let inEvent = false
-  let dtStart = null
-  let dtEnd   = null
-
-  for (const line of lines) {
-    const t = line.trim()
-
-    if (t === 'BEGIN:VEVENT') {
-      inEvent = true; dtStart = null; dtEnd = null
-    } else if (t === 'END:VEVENT') {
-      inEvent = false
-      if (dtStart && dtEnd) {
-        const cur = new Date(dtStart)
-        while (cur < dtEnd) { blocked.add(fmt(cur)); cur.setDate(cur.getDate() + 1) }
-      }
-    } else if (inEvent) {
-      const ci = t.indexOf(':')
-      if (ci < 0) continue
-      const key = t.slice(0, ci)
-      const val = t.slice(ci + 1)
-      if      (key.startsWith('DTSTART')) dtStart = icsDate(val)
-      else if (key.startsWith('DTEND'))   dtEnd   = icsDate(val)
-    }
-  }
-
-  return blocked
-}
-
-// Parse YYYYMMDD or YYYYMMDDTHHmmssZ into a local midnight Date
-function icsDate(v) {
-  const s = v.trim()
-  return new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8))
-}
+watch([viewYear, viewMonth], ([y, m]) => loadMonth(y, m))
+onMounted(() => loadMonth(viewYear.value, viewMonth.value))
 
 function fmt(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
-
-onMounted(load)
 </script>
 
 <template>
   <div class="av-cal">
 
-    <!-- No ICS configured ───────────────────────────── -->
-    <div v-if="!icsUrls.length" class="av-unconfigured">
-      <div class="av-unconfigured-icon">📅</div>
-      <p class="av-unconfigured-title">Availability on request</p>
-      <p class="av-unconfigured-sub">Contact us directly to check your dates.</p>
-    </div>
-
-    <!-- Calendar ─────────────────────────────────────── -->
-    <template v-else>
-
-      <!-- Month nav -->
-      <div class="av-header">
+    <!-- Month nav -->
+    <div class="av-header">
         <button
           class="av-nav"
           :disabled="!canGoPrev"
@@ -197,17 +150,16 @@ onMounted(load)
       <!-- Error notice -->
       <p v-if="error" class="av-error">{{ error }}</p>
 
-      <!-- Legend -->
-      <div class="av-legend">
-        <span class="av-legend-item">
-          <span class="av-pip av-pip--available"></span>Available
-        </span>
-        <span class="av-legend-item">
-          <span class="av-pip av-pip--booked"></span>Booked
-        </span>
-      </div>
+    <!-- Legend -->
+    <div class="av-legend">
+      <span class="av-legend-item">
+        <span class="av-pip av-pip--available"></span>Available
+      </span>
+      <span class="av-legend-item">
+        <span class="av-pip av-pip--booked"></span>Booked
+      </span>
+    </div>
 
-    </template>
   </div>
 </template>
 
@@ -218,30 +170,6 @@ onMounted(load)
   background: var(--white);
   padding: 36px 36px 28px;
   width: 100%;
-}
-
-/* ── Unconfigured state ──────────────────────────────── */
-.av-unconfigured {
-  text-align: center;
-  padding: 56px 24px;
-}
-.av-unconfigured-icon {
-  font-size: 2rem;
-  margin-bottom: 16px;
-  opacity: .45;
-}
-.av-unconfigured-title {
-  font-family: var(--ff-display), serif;
-  font-size: 1.3rem;
-  font-weight: 300;
-  color: var(--bark);
-  margin-bottom: 8px;
-}
-.av-unconfigured-sub {
-  font-size: .75rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: rgba(61,43,26,.4);
 }
 
 /* ── Month nav ───────────────────────────────────────── */

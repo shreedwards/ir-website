@@ -26,7 +26,7 @@ const amenities = [
 const reviews = [
   {
     text: "An unforgettable stay surrounded by wildlife. It was comfortable, peaceful, and felt like a true home away from home. We would absolutely stay here again.",
-    name: 'C.N Amour',
+    name: 'C.N. Amour',
     origin: 'Booking.com',
   },
   {
@@ -46,14 +46,6 @@ const galleryCards = [
   { title: 'Master Bedroom',       img: imgMaster },
   { title: 'Open Living Area',     img: imgLiving },
   { title: 'Wildlife at the Pool', img: imgZebras },
-]
-
-// Add iCal export URLs from your booking platforms (Airbnb, Booking.com, LekkeSlaap, etc.)
-// Each platform provides an "Export calendar" or "iCal" link in your listing's calendar settings.
-// Note: most platform iCal URLs require a server-side proxy to avoid CORS errors.
-const calendarIcsUrls = [
-  // 'https://www.airbnb.com/calendar/ical/YOUR_LISTING_ID.ics',
-  // 'https://ical.booking.com/v1/export?t=YOUR_TOKEN',
 ]
 
 const handleScroll = () => { scrolled.value = window.scrollY > 60 }
@@ -221,7 +213,7 @@ onUnmounted(() => {
 
       <div class="calendar-block reveal">
         <p class="contact-label" style="margin-bottom:20px">Availability</p>
-        <AvailabilityCalendar :ics-urls="calendarIcsUrls" />
+        <AvailabilityCalendar />
       </div>
     </div>
   </section>
