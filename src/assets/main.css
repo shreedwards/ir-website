@@ -589,6 +589,8 @@ section { scroll-margin-top: var(--nav-h); }
     font-weight: 500;
     letter-spacing: .16em;
     text-transform: uppercase;
+    overflow-wrap: break-word;
+    min-width: 0;
     transition: background .25s, border-color .25s, color .25s;
 }
 .booking-card::after { content: '→'; margin-left: auto; }
@@ -716,4 +718,11 @@ footer {
     .amenities-grid { grid-template-columns: 1fr; }
     footer { padding: 40px 24px 28px; }
     #gallery-highlights { padding: 72px 24px; }
+    .booking-card {
+        padding: 14px 16px;
+        font-size: .7rem;
+        letter-spacing: .06em;
+    }
+    .contact-header { margin-bottom: 40px; }
+    .calendar-block { margin-top: 40px; }
 }
