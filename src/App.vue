@@ -1,13 +1,13 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import SiteFooter from '@/components/SiteFooter.vue'
+import SiteNav from '@/components/SiteNav.vue'
 import AvailabilityCalendar from '@/components/AvailabilityCalendar.vue'
+import { Phone, Mail, MapPin } from '@lucide/vue'
 import imgPool    from '@/assets/photography/patio/pool.webp'
 import imgMaster  from '@/assets/photography/bedrooms/main-1.webp'
 import imgLiving  from '@/assets/photography/open-space/dining-room-1.webp'
 import imgZebras  from '@/assets/photography/nature/zebra-drinking.webp'
-
-const scrolled = ref(false)
 
 const navLinks = [
   { label: 'Home',    href: '#home' },
@@ -42,19 +42,15 @@ const reviews = [
 ]
 
 const galleryCards = [
-  { title: 'The Infinity Pool',    img: imgPool },
-  { title: 'Master Bedroom',       img: imgMaster },
-  { title: 'Open Living Area',     img: imgLiving },
-  { title: 'Wildlife at the Pool', img: imgZebras },
+  { title: 'The Infinity Pool',    img: imgPool,   href: 'gallery.html#patio-pool' },
+  { title: 'Master Bedroom',       img: imgMaster, href: 'gallery.html#bedrooms' },
+  { title: 'Open Living Area',     img: imgLiving, href: 'gallery.html#living' },
+  { title: 'Wildlife at the Pool', img: imgZebras, href: 'gallery.html#wildlife' },
 ]
-
-const handleScroll = () => { scrolled.value = window.scrollY > 60 }
 
 let observer
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-
   observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -68,24 +64,13 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
   if (observer) observer.disconnect()
 })
 </script>
 
 <template>
   <!-- NAV -->
-  <nav :class="{ scrolled }">
-    <div class="nav-brand">
-      <span class="nav-brand-name">Ingonyama Rest</span>
-      <span class="nav-brand-sub">Marloth Park</span>
-    </div>
-    <ul class="nav-links">
-      <li v-for="link in navLinks" :key="link.href">
-        <a :href="link.href">{{ link.label }}</a>
-      </li>
-    </ul>
-  </nav>
+  <SiteNav :nav-links="navLinks" />
 
   <!-- HERO -->
   <section id="home">
@@ -170,7 +155,7 @@ onUnmounted(() => {
       <a
         v-for="(card, i) in galleryCards"
         :key="card.title"
-        href="gallery.html"
+        :href="card.href"
         class="gallery-card"
         :style="`transition-delay:${i * .08}s`"
       >
@@ -196,9 +181,9 @@ onUnmounted(() => {
         <div class="contact-details reveal">
           <p class="contact-label" style="margin-bottom:20px">Contact Us</p>
           <div class="booking-grid">
-            <a href="tel:+27824645826" class="booking-card">+27 82 464 5826</a>
-            <a href="mailto:leighanne@ingonyamarest.co.za" class="booking-card">leighanne@ingonyamarest.co.za</a>
-            <a href="#" class="booking-card">2667 Hartbees Ave, Marloth Park</a>
+            <a href="tel:+27824645826" class="booking-card"><Phone :size="16" />+27 82 464 5826</a>
+            <a href="mailto:leighanne@ingonyamarest.co.za" class="booking-card"><Mail :size="16" />leighanne@ingonyamarest.co.za</a>
+            <a href="https://maps.app.goo.gl/rbEFiqR4MfDLUmPx5" class="booking-card"><MapPin :size="16" />2667 Hartbees Ave, Marloth Park</a>
           </div>
         </div>
         <div class="booking-links reveal" style="transition-delay:.15s">

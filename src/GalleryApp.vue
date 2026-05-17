@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import SiteFooter from '@/components/SiteFooter.vue'
+import SiteNav from '@/components/SiteNav.vue'
 
-const scrolled = ref(false)
 const lightbox = ref(null)
 
 const navLinks = [
@@ -83,33 +83,20 @@ const tileClass = (i) => i % 5 === 0 ? 'tile-wide' : ''
 const openLightbox = (photo) => { lightbox.value = photo }
 const closeLightbox = () => { lightbox.value = null }
 
-const handleScroll = () => { scrolled.value = window.scrollY > 60 }
 const handleKey = (e) => { if (e.key === 'Escape') closeLightbox() }
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('keydown', handleKey)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('keydown', handleKey)
 })
 </script>
 
 <template>
   <!-- NAV -->
-  <nav :class="{ scrolled }">
-    <a href="/" class="nav-brand" style="text-decoration:none">
-      <span class="nav-brand-name">Ingonyama Rest</span>
-      <span class="nav-brand-sub">Marloth Park</span>
-    </a>
-    <ul class="nav-links">
-      <li v-for="link in navLinks" :key="link.label">
-        <a :href="link.href">{{ link.label }}</a>
-      </li>
-    </ul>
-  </nav>
+  <SiteNav :nav-links="navLinks" />
 
   <!-- PAGE HEADER -->
   <header id="top" class="gallery-page-header" :style="{ '--hero-img': `url(${heroImg})` }">
@@ -361,8 +348,9 @@ onUnmounted(() => {
 }
 
 @media (max-width: 600px) {
+  .section-quicknav { display: none; }
   .gallery-page-header { height: 40vh; min-height: 280px; }
-  .photo-section { padding: 48px 16px; }
+  .photo-section { padding: 48px 16px; scroll-margin-top: var(--nav-h); }
   .photo-grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 180px;

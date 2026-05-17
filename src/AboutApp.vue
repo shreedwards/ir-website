@@ -1,8 +1,7 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted } from 'vue'
 import SiteFooter from '@/components/SiteFooter.vue'
-
-const scrolled = ref(false)
+import SiteNav from '@/components/SiteNav.vue'
 
 const navLinks = [
   { label: 'Home',    href: '/' },
@@ -114,11 +113,7 @@ const attractionZones = [
   },
 ]
 
-const handleScroll = () => { scrolled.value = window.scrollY > 60 }
-
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -131,24 +126,11 @@ onMounted(() => {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
 })
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <template>
   <!-- NAV -->
-  <nav :class="{ scrolled }">
-    <a href="/" class="nav-brand" style="text-decoration:none">
-      <span class="nav-brand-name">Ingonyama Rest</span>
-      <span class="nav-brand-sub">Marloth Park</span>
-    </a>
-    <ul class="nav-links">
-      <li v-for="link in navLinks" :key="link.label">
-        <a :href="link.href">{{ link.label }}</a>
-      </li>
-    </ul>
-  </nav>
+  <SiteNav :nav-links="navLinks" />
 
   <!-- PAGE HEADER -->
   <header id="top" class="about-page-header">

@@ -15,10 +15,20 @@ const blockedDates = ref(new Set())
 const loading      = ref(false)
 const error        = ref(null)
 
-// Tracks which "YYYY-MM" keys have already been fetched so navigation never re-requests them.
 const fetched = new Set()
 
-// ── Navigation ────────────────────────────────────────
+// ── Three visible months ───────────────────────────────
+
+const months = computed(() => {
+  return [0, 1, 2].map(offset => {
+    let m = viewMonth.value + offset
+    let y = viewYear.value
+    while (m > 11) { m -= 12; y++ }
+    return { year: y, month: m, label: `${MONTH[m]} ${y}` }
+  })
+})
+
+// ── Navigation ─────────────────────────────────────────
 
 const canGoPrev = computed(() =>
   !(viewYear.value === today.getFullYear() && viewMonth.value === today.getMonth())
@@ -35,45 +45,29 @@ function nextMonth() {
   else viewMonth.value++
 }
 
-const monthLabel = computed(() => `${MONTH[viewMonth.value]} ${viewYear.value}`)
+// ── Calendar grid ──────────────────────────────────────
 
-// ── Calendar grid ─────────────────────────────────────
-
-const calDays = computed(() => {
-  const y = viewYear.value
-  const m = viewMonth.value
+function calDaysFor(y, m) {
   const firstDow    = (new Date(y, m, 1).getDay() + 6) % 7  // Mon = 0
   const daysInMonth = new Date(y, m + 1, 0).getDate()
-
   const cells = Array.from({ length: firstDow }, () => null)
-
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(y, m, d)
     const str  = fmt(date)
-    cells.push({
-      d,
-      str,
-      isToday:   str === todayStr,
-      isPast:    date < today,
-      isBlocked: blockedDates.value.has(str),
-    })
+    cells.push({ d, str, isToday: str === todayStr, isPast: date < today, isBlocked: blockedDates.value.has(str) })
   }
-
   return cells
-})
+}
 
-// ── API fetch ─────────────────────────────────────────
+// ── API fetch ──────────────────────────────────────────
 
 async function loadMonth(year, month) {
   const key = `${year}-${String(month + 1).padStart(2, '0')}`
   if (fetched.has(key)) return
   fetched.add(key)
 
-  loading.value = true
-  error.value   = null
-
-  const mm       = String(month + 1).padStart(2, '0')
-  const lastDay  = new Date(year, month + 1, 0).getDate()
+  const mm      = String(month + 1).padStart(2, '0')
+  const lastDay = new Date(year, month + 1, 0).getDate()
   const startDate = `${year}-${mm}-01`
   const endDate   = `${year}-${mm}-${String(lastDay).padStart(2, '0')}`
 
@@ -81,7 +75,6 @@ async function loadMonth(year, month) {
     const res = await fetch(`/api/availability?start_date=${startDate}&end_date=${endDate}`)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
-
     const merged = new Set(blockedDates.value)
     for (const { date, booked } of data) {
       if (booked) merged.add(date)
@@ -90,14 +83,19 @@ async function loadMonth(year, month) {
   } catch (e) {
     error.value = 'Live availability could not be loaded — please contact us to confirm dates.'
     console.error('[AvailabilityCalendar]', e)
-    fetched.delete(key) // allow retry on next navigation
-  } finally {
-    loading.value = false
+    fetched.delete(key)
   }
 }
 
-watch([viewYear, viewMonth], ([y, m]) => loadMonth(y, m))
-onMounted(() => loadMonth(viewYear.value, viewMonth.value))
+async function loadVisible() {
+  loading.value = true
+  error.value   = null
+  await Promise.all(months.value.map(({ year, month }) => loadMonth(year, month)))
+  loading.value = false
+}
+
+watch([viewYear, viewMonth], loadVisible)
+onMounted(loadVisible)
 
 function fmt(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -107,48 +105,50 @@ function fmt(date) {
 <template>
   <div class="av-cal">
 
-    <!-- Month nav -->
+    <!-- Top nav bar -->
     <div class="av-header">
-        <button
-          class="av-nav"
-          :disabled="!canGoPrev"
-          @click="prevMonth"
-          aria-label="Previous month"
-        >&#8249;</button>
+      <button class="av-nav" :disabled="!canGoPrev" @click="prevMonth" aria-label="Previous month">&#8249;</button>
+      <span v-if="loading" class="av-spinner" aria-label="Loading"></span>
+      <button class="av-nav" @click="nextMonth" aria-label="Next month">&#8250;</button>
+    </div>
 
-        <div class="av-month-wrap">
-          <span class="av-month">{{ monthLabel }}</span>
-          <span v-if="loading" class="av-spinner" aria-label="Loading"></span>
+    <!-- Three month columns -->
+    <div class="av-months">
+      <div
+        v-for="{ year, month, label } in months"
+        :key="`${year}-${month}`"
+        class="av-month-col"
+      >
+        <!-- Month label -->
+        <div class="av-month-label">{{ label }}</div>
+
+        <!-- Day-of-week header -->
+        <div class="av-dow">
+          <span v-for="d in DOW" :key="d">{{ d }}</span>
         </div>
 
-        <button class="av-nav" @click="nextMonth" aria-label="Next month">&#8250;</button>
-      </div>
-
-      <!-- Day-of-week header -->
-      <div class="av-dow">
-        <span v-for="d in DOW" :key="d">{{ d }}</span>
-      </div>
-
-      <!-- Day grid -->
-      <div class="av-grid">
-        <div
-          v-for="(cell, i) in calDays"
-          :key="i"
-          class="av-cell"
-          :class="{
-            'av-cell--empty':   !cell,
-            'av-cell--blocked': cell?.isBlocked,
-            'av-cell--past':    cell?.isPast && !cell?.isBlocked,
-            'av-cell--today':   cell?.isToday,
-          }"
-          :aria-label="cell ? `${cell.str} — ${cell.isBlocked ? 'booked' : 'available'}` : undefined"
-        >
-          <span v-if="cell">{{ cell.d }}</span>
+        <!-- Day grid -->
+        <div class="av-grid">
+          <div
+            v-for="(cell, i) in calDaysFor(year, month)"
+            :key="i"
+            class="av-cell"
+            :class="{
+              'av-cell--empty':   !cell,
+              'av-cell--blocked': cell?.isBlocked,
+              'av-cell--past':    cell?.isPast && !cell?.isBlocked,
+              'av-cell--today':   cell?.isToday,
+            }"
+            :aria-label="cell ? `${cell.str} — ${cell.isBlocked ? 'booked' : 'available'}` : undefined"
+          >
+            <span v-if="cell">{{ cell.d }}</span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Error notice -->
-      <p v-if="error" class="av-error">{{ error }}</p>
+    <!-- Error notice -->
+    <p v-if="error" class="av-error">{{ error }}</p>
 
     <!-- Legend -->
     <div class="av-legend">
@@ -172,28 +172,12 @@ function fmt(date) {
   width: 100%;
 }
 
-/* ── Month nav ───────────────────────────────────────── */
+/* ── Top nav bar ─────────────────────────────────────── */
 .av-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.av-month-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.av-month {
-  font-family: var(--ff-display), serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--bark);
-  letter-spacing: .02em;
-  min-width: 200px;
-  text-align: center;
+  margin-bottom: 28px;
 }
 
 .av-nav {
@@ -233,6 +217,27 @@ function fmt(date) {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── Three-column month layout ───────────────────────── */
+.av-months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.av-month-col {
+  min-width: 0;
+}
+
+.av-month-label {
+  font-family: var(--ff-display), serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--bark);
+  letter-spacing: .02em;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
 /* ── Day-of-week row ─────────────────────────────────── */
 .av-dow {
   display: grid;
@@ -242,19 +247,19 @@ function fmt(date) {
 }
 .av-dow span {
   text-align: center;
-  font-size: .58rem;
-  letter-spacing: .18em;
+  font-size: .52rem;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--earth);
   font-weight: 500;
-  padding: 4px 0 10px;
+  padding: 4px 0 8px;
 }
 
 /* ── Day grid ────────────────────────────────────────── */
 .av-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
+  gap: 2px;
 }
 
 .av-cell {
@@ -262,7 +267,7 @@ function fmt(date) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .82rem;
+  font-size: .72rem;
   font-weight: 400;
   color: var(--bark);
   background: rgba(242,223,195,.18);
@@ -276,7 +281,7 @@ function fmt(date) {
 
 .av-cell--blocked {
   background: var(--bark);
-  color: rgba(253,250,245,.15);
+  color: rgba(253,250,245,.75);
 }
 
 .av-cell--past {
@@ -284,7 +289,6 @@ function fmt(date) {
   background: rgba(242,223,195,.06);
 }
 
-/* Today ring — works on both available and blocked cells */
 .av-cell--today {
   box-shadow: inset 0 0 0 2px var(--ember);
   font-weight: 700;
@@ -333,13 +337,13 @@ function fmt(date) {
 
 /* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {
-  .av-month { min-width: 160px; }
+  .av-months { grid-template-columns: 1fr; gap: 36px; }
+  .av-month-label { font-size: 1.3rem; }
 }
 
 @media (max-width: 600px) {
-  .av-cal    { padding: 24px 16px 20px; }
-  .av-cell   { font-size: .7rem; }
-  .av-month  { font-size: 1.2rem; min-width: 140px; }
-  .av-nav    { width: 32px; height: 32px; font-size: 1.2rem; }
+  .av-cal  { padding: 24px 16px 20px; }
+  .av-cell { font-size: .65rem; }
+  .av-nav  { width: 32px; height: 32px; font-size: 1.2rem; }
 }
 </style>

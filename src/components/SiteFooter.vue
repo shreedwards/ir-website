@@ -14,7 +14,7 @@ const navLinks = [
         <div>
           <div class="footer-brand-name">Ingonyama Rest</div>
           <div class="footer-brand-sub">Marloth Park · South Africa</div>
-          <p class="footer-tagline">Where the wild things rest.</p>
+          <p class="footer-tagline">The lion's place of rest.</p>
         </div>
         <ul class="footer-nav">
           <li v-for="link in navLinks" :key="link.href">
