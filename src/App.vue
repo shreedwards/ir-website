@@ -182,7 +182,7 @@ onUnmounted(() => {
           <p class="contact-label" style="margin-bottom:20px">Contact Us</p>
           <div class="booking-grid">
             <a href="tel:+27824645826" class="booking-card"><Phone :size="16" />+27 82 464 5826</a>
-            <a href="mailto:leighanne@ingonyamarest.co.za" class="booking-card"><Mail :size="16" />leighanne@ingonyamarest.co.za</a>
+            <a href="mailto:leighanne@ingonyamarest.co.za" class="booking-card"><Mail :size="16" />bookings@ingonyamarest.co.za</a>
             <a href="https://maps.app.goo.gl/rbEFiqR4MfDLUmPx5" class="booking-card"><MapPin :size="16" />2667 Hartbees Ave, Marloth Park</a>
           </div>
         </div>

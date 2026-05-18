@@ -215,7 +215,7 @@ nav.scrolled {
     animation: scrollPulse 2s ease-in-out infinite;
 }
 @keyframes scrollPulse {
-    0%,100% { opacity: .4; transform: scaleY(1); }
+    0%,100%  { opacity: .4; transform: scaleY(1); }
     50%      { opacity: 1;  transform: scaleY(1.2); }
 }
 
