@@ -15,7 +15,7 @@ const propertyStats = [
   { figure: '3',     label: 'Bedrooms' },
   { figure: '3½',   label: 'Bathrooms' },
   { figure: 'Pool',  label: 'Infinity Edge' },
-  { figure: 'A/C',   label: 'Every Room' },
+  { figure: 'A/C',   label: 'Every Bedoom' },
   { figure: 'Solar', label: 'Power Backup' },
 ]
 
@@ -65,6 +65,36 @@ const amenityGroups = [
       { name: 'Grooming',        desc: 'Hairdryer located in the main bedroom.' },
     ],
   },
+  {
+    icon: '🧹',
+    title: 'Housekeeping',
+    items: [
+      { name: 'Cleaning Services', desc: 'House cleaning is available during your stay. Contact the property manager to arrange a schedule and discuss details.' },
+    ],
+  },
+]
+
+const checkInSteps = [
+  {
+    num: '01',
+    title: 'One Week Before Arrival',
+    desc: 'Receive a message from Galina, the property manager, containing the policy document, a request for the security deposit, and an inquiry about your arrival time.',
+  },
+  {
+    num: '02',
+    title: 'Confirm Arrival Time',
+    desc: 'Reply with your intended arrival time. Standard check-in is between 2:00 PM and 6:00 PM, but you can request an alternate time if needed.',
+  },
+  {
+    num: '03',
+    title: 'Property Arrival',
+    desc: 'Arrive at the house at the agreed-upon time to meet Galina.',
+  },
+  {
+    num: '04',
+    title: 'Welcome & Handover',
+    desc: 'Meet Galina to receive the keys and optionally take a tour of the house to get familiar with everything.',
+  },
 ]
 
 const houseRules = [
@@ -74,7 +104,7 @@ const houseRules = [
   { name: 'No Hand-Feeding',  desc: 'Do not hand-feed any animals, particularly those with horns.' },
   { name: 'Animal Feed',      desc: 'Purchase suitable animal feed and fodder only at the Marloth shopping centres.' },
   { name: 'Animal Distance',  desc: 'Maintain a respectable distance from animals; they are habituated to humans but remain wild and undomesticated.' },
-  { name: 'Noise Levels',     desc: 'Keep noise levels low and avoid loud music or parties, as sound travels easily in the bush.' },
+  { name: 'Noise Levels',     desc: 'Keep noise levels low, no loud music or parties are allowed as sound travels easily in the bush.' },
   { name: 'No Pets',          desc: 'Strictly no pets are allowed on the premises.' },
   { name: 'Check-In Process', desc: 'Sign the Ingonyama Rest Conditions & Policies document and pay the security deposit before the handover of keys.' },
 ]
@@ -256,6 +286,33 @@ onMounted(() => {
         >
           <div class="attr-name">{{ rule.name }}</div>
           <p class="attr-desc">{{ rule.desc }}</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CHECK-IN PROCESS -->
+  <section class="checkin-section section-pad">
+    <div class="checkin-inner">
+
+      <div class="checkin-head reveal">
+        <p class="section-label">Arriving at Ingonyama Rest</p>
+        <h2 class="page-h2 dark">Check-In <em>Process</em></h2>
+      </div>
+
+      <div class="checkin-steps">
+        <div
+          v-for="(step, i) in checkInSteps"
+          :key="step.num"
+          class="checkin-step reveal"
+          :style="`transition-delay:${i * .1}s`"
+        >
+          <div class="step-num">{{ step.num }}</div>
+          <div class="step-content">
+            <div class="step-title">{{ step.title }}</div>
+            <p class="step-desc">{{ step.desc }}</p>
+          </div>
         </div>
       </div>
 
@@ -613,6 +670,72 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 12px;
+}
+
+/* ── CHECK-IN SECTION ────────────────────────────────── */
+.checkin-section { background: var(--smoke); }
+
+.checkin-inner {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.checkin-head {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.checkin-head .page-h2 em {
+  font-style: italic;
+  color: var(--clay);
+}
+
+.checkin-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.checkin-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;
+  padding: 36px 0;
+  border-bottom: 1px solid rgba(196,130,74,.18);
+  position: relative;
+}
+.checkin-step:first-child { border-top: 1px solid rgba(196,130,74,.18); }
+
+.step-num {
+  font-family: var(--ff-display), serif;
+  font-size: 3.2rem;
+  font-weight: 300;
+  color: rgba(196,130,74,.25);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 72px;
+  text-align: right;
+  padding-top: 2px;
+  transition: color .25s;
+}
+.checkin-step:hover .step-num { color: var(--clay); }
+
+.step-content { flex: 1; }
+
+.step-title {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--bark);
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: .92rem;
+  line-height: 1.8;
+  color: var(--earth);
+  font-weight: 300;
 }
 
 /* ── CTA STRIP ───────────────────────────────────────── */

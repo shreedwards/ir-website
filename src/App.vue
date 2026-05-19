@@ -17,10 +17,10 @@ const navLinks = [
 ]
 
 const amenities = [
-  { icon: '🛏️', title: 'Sleeps 6',      sub: 'One master and two guest bedrooms' },
-  { icon: '🚿', title: '3½ Bathrooms', sub: 'Three En-suite & one guest' },
-  { icon: '🏊', title: 'Infinity Pool', sub: 'Sunsets included' },
-  { icon: '🍳', title: 'Full Kitchen',  sub: 'Perfect for bush braais' },
+  { icon: '🛏️', title: 'Sleeps 6',      sub: 'Three air-conditioned bedrooms' },
+  { icon: '🚿', title: '3½ Bathrooms',  sub: 'Three En-suite & one guest' },
+  { icon: '🏊', title: 'Infinity Pool', sub: 'With elevated patio' },
+  { icon: '🍳', title: 'Full Kitchen',  sub: 'Full amenities & additional scullery' },
 ]
 
 const reviews = [
@@ -39,6 +39,13 @@ const reviews = [
     name: 'Lorinda',
     origin: 'Airbnb',
   },
+]
+
+const rates = [
+  { label: 'Standard Rate',   price: 'R2 700', per: 'per night', note: 'Year-round base rate' },
+  { label: 'Weekly Rate',     price: 'R2 430', per: 'per night', note: '7 nights or more' },
+  { label: 'School Holidays', price: 'R3 000', per: 'per night', note: 'Easter, July & Sept/Oct' },
+  { label: 'Festive Season',  price: 'R3 500', per: 'per night', note: '16 Dec – 15 Jan' },
 ]
 
 const galleryCards = [
@@ -101,7 +108,7 @@ onUnmounted(() => {
         <p class="about-desc">
           Ingonyama Rest is a private holiday home nestled in the heart of Marloth Park,
           where unfenced wilderness meets refined comfort. Wake to the sound of birdsong,
-          watch elephants stroll past at dusk, and return each evening to every luxury
+          watch giraffes stroll past at dusk, and return each evening to every luxury
           you could want. Africa, in its full, untamed glory — right at your doorstep.
         </p>
         <div class="cta-group">
@@ -182,7 +189,7 @@ onUnmounted(() => {
           <p class="contact-label" style="margin-bottom:20px">Contact Us</p>
           <div class="booking-grid">
             <a href="tel:+27824645826" class="booking-card"><Phone :size="16" />+27 82 464 5826</a>
-            <a href="mailto:leighanne@ingonyamarest.co.za" class="booking-card"><Mail :size="16" />bookings@ingonyamarest.co.za</a>
+            <a href="mailto:leighanne@ingonyamarest.co.za" class="booking-card"><Mail :size="16" />bookings@ingonyama-rest.co.za</a>
             <a href="https://maps.app.goo.gl/rbEFiqR4MfDLUmPx5" class="booking-card"><MapPin :size="16" />2667 Hartbees Ave, Marloth Park</a>
           </div>
         </div>
@@ -192,6 +199,37 @@ onUnmounted(() => {
             <a href="https://www.booking.com/hotel/za/ingonyama-rest-marloth-park1.html" class="booking-card">Booking.com</a>
             <a href="https://lks.io/UmTJu312" class="booking-card">LekkeSlaap</a>
             <a href="https://www.airbnb.com/rooms/1331854868811267063?check_in=2026-05-16&check_out=2026-05-21&guests=1&adults=1&s=67&unique_share_id=4bb29d74-b6ab-4772-8463-d5e5bdf6fba2" class="booking-card">Airbnb</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rates-block reveal">
+        <p class="contact-label" style="margin-bottom:28px">Bookings & Rates</p>
+        <div class="rates-layout">
+          <div class="rules-cards">
+            <div class="rule-card">
+              <div class="rule-card-label">Booking Rules</div>
+              <p class="rule-card-text">The entire property is booked as a unit regardless of the number of guests (maximum 6). A minimum stay of 3 nights is required.</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-card-label">Payment</div>
+              <p class="rule-card-text">A 50% deposit is required on booking, with the balance payable one month before arrival.</p>
+            </div>
+            <div class="rule-card rule-card--cancel">
+              <div class="rule-card-label">Cancellation</div>
+              <p class="rule-card-text">More than 30 days before arrival — free of charge. 7–30 days before — 50% of rent. Within 7 days of arrival — 100% of rent.</p>
+            </div>
+          </div>
+          <div class="rate-tiers">
+            <div
+              v-for="(rate, i) in rates"
+              :key="rate.label"
+              class="rate-card"
+            >
+              <div class="rate-label">{{ rate.label }}</div>
+              <div class="rate-price">{{ rate.price }} <span class="rate-per">{{ rate.per }}</span></div>
+              <div class="rate-note">{{ rate.note }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -206,3 +244,119 @@ onUnmounted(() => {
   <!-- FOOTER -->
   <SiteFooter />
 </template>
+
+<style scoped>
+/* ── RATES BLOCK ─────────────────────────────────────── */
+.rates-block {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(196,130,74,.18);
+}
+
+.rates-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.rules-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rule-card {
+  background: var(--white);
+  border: 1px solid rgba(196,130,74,.2);
+  border-left: 3px solid var(--clay);
+  padding: 20px 20px 18px;
+  transition: border-color .22s, box-shadow .22s;
+}
+.rule-card:hover {
+  border-left-color: var(--ember);
+  box-shadow: 0 4px 18px rgba(61,43,26,.08);
+}
+.rule-card--cancel {
+  border-left-color: #b84040;
+  background: rgba(184,64,64,.04);
+}
+.rule-card--cancel:hover {
+  border-left-color: #c94a4a;
+  box-shadow: 0 4px 18px rgba(184,64,64,.1);
+}
+
+.rule-card-label {
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 10px;
+}
+.rule-card--cancel .rule-card-label { color: #b84040; }
+
+.rule-card-text {
+  font-size: .88rem;
+  line-height: 1.75;
+  color: var(--earth);
+  font-weight: 300;
+}
+
+.rate-tiers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.rate-card {
+  background: var(--white);
+  border: 1px solid rgba(196,130,74,.2);
+  border-left: 3px solid var(--clay);
+  padding: 20px 20px 18px;
+  transition: border-color .22s, box-shadow .22s;
+}
+.rate-card:hover {
+  border-left-color: var(--ember);
+  box-shadow: 0 4px 18px rgba(61,43,26,.08);
+}
+
+.rate-label {
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 10px;
+}
+
+.rate-price {
+  font-family: var(--ff-display), serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--bark);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.rate-per {
+  font-family: var(--ff-body), sans-serif;
+  font-size: .72rem;
+  font-weight: 300;
+  color: var(--earth);
+  letter-spacing: .04em;
+}
+
+.rate-note {
+  font-size: .78rem;
+  color: rgba(61,43,26,.5);
+  font-weight: 300;
+}
+
+@media (max-width: 860px) {
+  .rates-layout { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 480px) {
+  .rate-tiers { grid-template-columns: 1fr; }
+}
+</style>
