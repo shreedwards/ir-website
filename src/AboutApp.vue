@@ -99,13 +99,13 @@ const checkInSteps = [
 
 const houseRules = [
   { name: 'Night Safety',     desc: 'Do not walk around outside after dark (between sunset and sunrise) due to predators in the area.' },
-  { name: 'Door Security',    desc: 'Keep doors locked when you are not actively present in a room, as baboons can open unlocked doors and cause significant damage.' },
-  { name: 'Window Safety',    desc: 'Ensure windows are closed when you are out to prevent baboons from entering.' },
-  { name: 'No Hand-Feeding',  desc: 'Do not hand-feed any animals, particularly those with horns.' },
-  { name: 'Animal Feed',      desc: 'Purchase suitable animal feed and fodder only at the Marloth shopping centres.' },
-  { name: 'Animal Distance',  desc: 'Maintain a respectable distance from animals; they are habituated to humans but remain wild and undomesticated.' },
-  { name: 'Noise Levels',     desc: 'Keep noise levels low, no loud music or parties are allowed as sound travels easily in the bush.' },
+  { name: 'Baboon Safety',    desc: 'Keep doors locked and windows closed when you are away, as baboons can open unlocked doors and cause significant damage.' },
+  { name: 'Animal Feed',      desc: 'Purchase suitable animal feed and fodder only at the Marloth Park shopping centres.' },
+  { name: 'Animal Distance',  desc: 'Maintain a respectable distance from animals and do not hand feed any animals; they are habituated to humans but remain wild and undomesticated.' },
+  { name: 'Noise Levels',     desc: 'Keep noise levels low, no loud music, fireworks or parties are allowed as sound travels easily in the bush.' },
+  { name: 'Fire Safety',      desc: 'No fires on windy days. Put fires out before going to sleep. Do not throw coals into the bushes. Bonfires are forbidden.' },
   { name: 'No Pets',          desc: 'Strictly no pets are allowed on the premises.' },
+  { name: 'Walking',          desc: 'Do not litter on walks. Keep to the roads, do not walk into the bush or onto other properties' },
   { name: 'Check-In Process', desc: 'Sign the Ingonyama Rest Conditions & Policies document and pay the security deposit before the handover of keys.' },
 ]
 
@@ -126,19 +126,21 @@ const attractionZones = [
     label: 'Local Area',
     eyebrow: 'Day Trips',
     items: [
-      { name: 'Kruger National Park', desc: 'Premier wildlife reserve via Crocodile Bridge or Malelane Gate; ideal for self-drives.' },
-      { name: 'Komatipoort',          desc: 'Border town with restaurants, seafood at Tamborina, and grocery options.' },
-      { name: 'Kambaku Golf Club',    desc: 'Local golf course hosting the weekly Vitality ParkRun on Saturdays.' },
-      { name: 'Komati Archery',       desc: 'Target archery experiences for an alternative outdoor adventure.' },
+      { name: 'Kruger National Park', desc: 'Premier wildlife reserve via Crocodile Bridge or Malelane Gate; ideal for self-drives.', distance: '20km' },
+      { name: 'Komatipoort',          desc: 'Border town with restaurants, seafood from Mozambique, and grocery options.',            distance: '26km' },
+      { name: 'Kambaku Golf Club',    desc: 'Local golf course hosting the weekly Vitality ParkRun on Saturdays.',                    distance: '26km' },
+      { name: 'Komati Archery',       desc: 'Target archery experiences for an alternative outdoor adventure.',                       distance: '26km' },
+      { name: 'Tiger fishing',        desc: 'Catch South Africa\'s most electrifying fresh water fish.' },
+      { name: 'Boat Cruises',         desc: 'Enjoy a relaxing river cruise amongst the hippos.' },
     ],
   },
   {
     label: 'Further Away',
     eyebrow: 'Explore More',
     items: [
-      { name: 'Lowveld National Gardens', desc: 'Botanical gardens in Mbombela with scenic walks and on-site dining.' },
-      { name: 'Kaapschehoop',             desc: 'Arty mountain village with bouldering, quaint shops, and a hike to Battery Creek waterfall.' },
-      { name: 'Sudwala Caves',            desc: "World's oldest known cave system with guided tours, ziplining, and a Zen garden." },
+      { name: 'Lowveld National Gardens', desc: 'Botanical gardens in Mbombela with scenic walks and on-site dining.',                         distance: '105km' },
+      { name: 'Kaapschehoop',             desc: 'Arty mountain village with bouldering, quaint shops, and a hike to Battery Creek waterfall.', distance: '130km' },
+      { name: 'Sudwala Caves',            desc: "World's oldest known cave system with guided tours, ziplining, and a Zen garden.",            distance: '135km' },
     ],
   },
 ]
@@ -178,13 +180,14 @@ onMounted(() => {
 
       <div class="desc-lead reveal">
         <p class="section-label">Your Home in the Wild</p>
-        <h2 class="desc-title">A self-catering retreat<br>in the <em>Lowveld bush</em></h2>
+        <h2 class="desc-title">A self-catering retreat<br>on the doorstep of the<br><em>Kruger National Park</em></h2>
       </div>
 
       <div class="desc-body reveal" style="transition-delay:.1s">
-        <p>Ingonyama Rest is a self-catering home sleeping 6 individuals. The house is a free-standing home in the bush complete with a patio, pool and surrounding garden.</p>
-        <p>There are 3 bedrooms, each en-suite plus a separate guest toilet, fully equipped kitchen and scullery with a dishwasher and washing machine. The open-plan living room with elevated ceilings leads out to the indoor/outdoor patio and infinity-edge pool.</p>
+        <p>Ingonyama Rest is a self-catering home sleeping six individuals. The house is a free-standing home in the bush complete with a patio, pool and surrounding garden.</p>
+        <p>Three bedrooms, each en-suite plus a separate guest toilet, fully equipped kitchen and scullery with a dishwasher and washing machine. An open-plan living room with elevated ceilings leading out to an indoor/outdoor patio with an infinity-edge pool.</p>
         <p>The main bedroom has a queen-size bed, the other two rooms having two single beds each. Every room is air-conditioned with additional ceiling fans in each living area and bedrooms.</p>
+        <p>Parking is available for up to three vehicles.</p>
       </div>
 
       <div class="stats-row reveal" style="transition-delay:.2s">
@@ -258,6 +261,7 @@ onMounted(() => {
           </div>
           <div class="zone-items">
             <div v-for="item in zone.items" :key="item.name" class="attr-card">
+              <span v-if="item.distance" class="attr-distance">{{ item.distance }}</span>
               <div class="attr-name">{{ item.name }}</div>
               <p class="attr-desc">{{ item.desc }}</p>
             </div>
@@ -405,7 +409,7 @@ onMounted(() => {
   margin-bottom: 52px;
 }
 .desc-body p {
-  font-size: .98rem;
+  font-size: 1.03rem;
   line-height: 1.9;
   color: var(--earth);
   font-weight: 300;
@@ -440,7 +444,7 @@ onMounted(() => {
 }
 
 .stat-label {
-  font-size: .6rem;
+  font-size: .65rem;
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--earth);
@@ -531,7 +535,7 @@ onMounted(() => {
 }
 
 .ag-name {
-  font-size: .68rem;
+  font-size: .73rem;
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -539,7 +543,7 @@ onMounted(() => {
 }
 
 .ag-desc {
-  font-size: .87rem;
+  font-size: .92rem;
   line-height: 1.65;
   color: rgba(253,250,245,.58);
   font-weight: 300;
@@ -559,7 +563,7 @@ onMounted(() => {
 }
 
 .attractions-sub {
-  font-size: .88rem;
+  font-size: .93rem;
   color: rgba(61,43,26,.45);
   margin-top: 16px;
   letter-spacing: .05em;
@@ -582,7 +586,7 @@ onMounted(() => {
 .zone-2 .zone-head { border-color: var(--sage); }
 
 .zone-eyebrow {
-  font-size: .6rem;
+  font-size: .65rem;
   letter-spacing: .28em;
   text-transform: uppercase;
   color: var(--clay);
@@ -611,6 +615,18 @@ onMounted(() => {
   border-left: 3px solid rgba(196,130,74,.35);
   box-shadow: 0 2px 10px rgba(61,43,26,.05);
   transition: border-color .25s, box-shadow .25s, transform .22s;
+  position: relative;
+}
+
+.attr-distance {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: .67rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--earth);
+  opacity: .6;
 }
 .attr-card:hover {
   border-left-color: var(--clay);
@@ -625,7 +641,7 @@ onMounted(() => {
 .zone-2 .attr-card:hover { border-left-color: var(--sage); }
 
 .attr-name {
-  font-size: .72rem;
+  font-size: .77rem;
   font-weight: 500;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -634,7 +650,7 @@ onMounted(() => {
 }
 
 .attr-desc {
-  font-size: .85rem;
+  font-size: .9rem;
   line-height: 1.65;
   color: rgba(61,43,26,.58);
   font-weight: 300;
@@ -723,7 +739,7 @@ onMounted(() => {
 .step-content { flex: 1; }
 
 .step-title {
-  font-size: .72rem;
+  font-size: .77rem;
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -732,7 +748,7 @@ onMounted(() => {
 }
 
 .step-desc {
-  font-size: .92rem;
+  font-size: .97rem;
   line-height: 1.8;
   color: var(--earth);
   font-weight: 300;

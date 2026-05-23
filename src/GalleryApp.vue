@@ -199,7 +199,7 @@ onUnmounted(() => {
 .quicknav-link {
   flex: none;
   padding: 14px 32px;
-  font-size: .65rem;
+  font-size: .7rem;
   font-weight: 500;
   letter-spacing: .22em;
   text-transform: uppercase;
@@ -273,7 +273,7 @@ onUnmounted(() => {
   padding: 32px 16px 14px;
   background: linear-gradient(to top, rgba(28,18,10,.78) 0%, transparent 100%);
   font-family: var(--ff-display), serif;
-  font-size: .95rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--white);
   letter-spacing: .03em;
@@ -309,7 +309,7 @@ onUnmounted(() => {
 
 .lightbox-caption {
   font-family: var(--ff-display), serif;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 300;
   font-style: italic;
   color: var(--ember);

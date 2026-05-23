@@ -58,7 +58,7 @@ nav.scrolled {
     line-height: 1;
 }
 .nav-brand-sub {
-    font-size: .65rem;
+    font-size: .7rem;
     font-weight: 300;
     color: var(--ember);
     letter-spacing: .22em;
@@ -71,7 +71,7 @@ nav.scrolled {
     list-style: none;
 }
 .nav-links a {
-    font-size: .78rem;
+    font-size: .83rem;
     font-weight: 400;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -135,7 +135,7 @@ nav.scrolled {
 }
 
 .hero-eyebrow {
-    font-size: .7rem;
+    font-size: .75rem;
     letter-spacing: .32em;
     text-transform: uppercase;
     color: var(--ember);
@@ -166,7 +166,7 @@ nav.scrolled {
 }
 
 .hero-sub {
-    font-size: .82rem;
+    font-size: .88rem;
     letter-spacing: .14em;
     text-transform: uppercase;
     color: rgba(253,250,245,.7);
@@ -180,7 +180,7 @@ nav.scrolled {
     animation: fadeUp .9s .6s both;
 }
 .hero-location-label {
-    font-size: .6rem;
+    font-size: .65rem;
     letter-spacing: .28em;
     text-transform: uppercase;
     color: var(--ember);
@@ -203,7 +203,7 @@ nav.scrolled {
     align-items: center;
     gap: 8px;
     color: rgba(253,250,245,.5);
-    font-size: .6rem;
+    font-size: .65rem;
     letter-spacing: .2em;
     text-transform: uppercase;
     animation: fadeUp 1s 1s both;
@@ -250,7 +250,7 @@ section { scroll-margin-top: var(--nav-h); }
 }
 
 .section-label {
-    font-size: .62rem;
+    font-size: .67rem;
     letter-spacing: .3em;
     text-transform: uppercase;
     color: var(--ember);
@@ -271,7 +271,7 @@ section { scroll-margin-top: var(--nav-h); }
 }
 
 .about-desc {
-    font-size: .95rem;
+    font-size: 1rem;
     line-height: 1.85;
     color: rgba(253,250,245,.65);
     font-weight: 300;
@@ -294,7 +294,7 @@ section { scroll-margin-top: var(--nav-h); }
     border: none;
     padding: 15px 34px;
     font-family: var(--ff-body), serif;
-    font-size: .75rem;
+    font-size: .8rem;
     font-weight: 500;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -313,7 +313,7 @@ section { scroll-margin-top: var(--nav-h); }
     border: 1px solid var(--ember);
     padding: 15px 34px;
     font-family: var(--ff-body), serif;
-    font-size: .75rem;
+    font-size: .8rem;
     font-weight: 500;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -355,7 +355,7 @@ section { scroll-margin-top: var(--nav-h); }
     margin-bottom: 2px;
 }
 .amenity-sub {
-    font-size: .73rem;
+    font-size: .78rem;
     color: rgba(253,250,245,.45);
     letter-spacing: .06em;
 }
@@ -403,14 +403,14 @@ section { scroll-margin-top: var(--nav-h); }
 
 .review-stars {
     color: var(--gold);
-    font-size: .85rem;
+    font-size: .9rem;
     letter-spacing: .12em;
     margin-bottom: 18px;
 }
 
 .review-text {
     font-family: var(--ff-display), serif;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 300;
     font-style: italic;
     color: var(--earth);
@@ -436,13 +436,13 @@ section { scroll-margin-top: var(--nav-h); }
     color: var(--earth);
 }
 .review-name {
-    font-size: .78rem;
+    font-size: .83rem;
     font-weight: 500;
     color: var(--bark);
     letter-spacing: .06em;
 }
 .review-origin {
-    font-size: .68rem;
+    font-size: .73rem;
     color: rgba(61,43,26,.45);
     margin-top: 2px;
     letter-spacing: .04em;
@@ -520,7 +520,7 @@ section { scroll-margin-top: var(--nav-h); }
     margin-bottom: 2px;
 }
 .gallery-card-link {
-    font-size: .65rem;
+    font-size: .7rem;
     letter-spacing: .2em;
     text-transform: uppercase;
     color: var(--ember);
@@ -559,7 +559,7 @@ section { scroll-margin-top: var(--nav-h); }
 }
 
 .contact-label {
-    font-size: .6rem;
+    font-size: .65rem;
     letter-spacing: .28em;
     text-transform: uppercase;
     color: var(--clay);
@@ -585,7 +585,7 @@ section { scroll-margin-top: var(--nav-h); }
     border: 1px solid rgba(196,130,74,.25);
     color: var(--bark);
     text-decoration: none;
-    font-size: .75rem;
+    font-size: .8rem;
     font-weight: 500;
     letter-spacing: .16em;
     text-transform: uppercase;
@@ -630,14 +630,14 @@ footer {
     margin-bottom: 6px;
 }
 .footer-brand-sub {
-    font-size: .62rem;
+    font-size: .67rem;
     letter-spacing: .24em;
     text-transform: uppercase;
     color: var(--ember);
 }
 .footer-tagline {
     font-family: var(--ff-display), serif;
-    font-size: .95rem;
+    font-size: 1rem;
     font-style: italic;
     color: rgba(253,250,245,.35);
     margin-top: 14px;
@@ -650,7 +650,7 @@ footer {
     flex-wrap: wrap;
 }
 .footer-nav a {
-    font-size: .73rem;
+    font-size: .78rem;
     letter-spacing: .18em;
     text-transform: uppercase;
     color: rgba(253,250,245,.5);
@@ -669,7 +669,7 @@ footer {
     gap: 12px;
 }
 .footer-copy {
-    font-size: .7rem;
+    font-size: .75rem;
     color: rgba(253,250,245,.3);
     letter-spacing: .08em;
 }
@@ -720,7 +720,7 @@ footer {
     #gallery-highlights { padding: 72px 24px; }
     .booking-card {
         padding: 14px 16px;
-        font-size: .7rem;
+        font-size: .75rem;
         letter-spacing: .06em;
     }
     .contact-header { margin-bottom: 40px; }

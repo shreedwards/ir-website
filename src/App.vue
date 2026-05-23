@@ -20,7 +20,7 @@ const amenities = [
   { icon: '🛏️', title: 'Sleeps 6',      sub: 'Three air-conditioned bedrooms' },
   { icon: '🚿', title: '3½ Bathrooms',  sub: 'Three En-suite & one guest' },
   { icon: '🏊', title: 'Infinity Pool', sub: 'With elevated patio' },
-  { icon: '🍳', title: 'Full Kitchen',  sub: 'Full amenities & additional scullery' },
+  { icon: '🍳', title: 'Full Kitchen',  sub: 'Perfect for bush braais' },
 ]
 
 const reviews = [
@@ -85,7 +85,7 @@ onUnmounted(() => {
     <div class="hero-grain"></div>
     <div class="hero-content">
       <p class="hero-eyebrow">Marloth Park · South Africa</p>
-      <h1 class="hero-title">Rest with<br>the <em>lions</em></h1>
+      <h1 class="hero-title">Where the<br><em>lion</em> rests</h1>
       <div class="hero-divider"></div>
       <p class="hero-sub">Ingonyama Rest</p>
     </div>
@@ -198,7 +198,7 @@ onUnmounted(() => {
           <div class="booking-grid">
             <a href="https://www.booking.com/hotel/za/ingonyama-rest-marloth-park1.html" class="booking-card">Booking.com</a>
             <a href="https://lks.io/UmTJu312" class="booking-card">LekkeSlaap</a>
-            <a href="https://www.airbnb.com/rooms/1331854868811267063?check_in=2026-05-16&check_out=2026-05-21&guests=1&adults=1&s=67&unique_share_id=4bb29d74-b6ab-4772-8463-d5e5bdf6fba2" class="booking-card">Airbnb</a>
+            <a href="https://www.airbnb.com/rooms/1331854868811267063" class="booking-card">Airbnb</a>
           </div>
         </div>
       </div>
@@ -287,7 +287,7 @@ onUnmounted(() => {
 }
 
 .rule-card-label {
-  font-size: .62rem;
+  font-size: .67rem;
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -297,7 +297,7 @@ onUnmounted(() => {
 .rule-card--cancel .rule-card-label { color: #b84040; }
 
 .rule-card-text {
-  font-size: .88rem;
+  font-size: .93rem;
   line-height: 1.75;
   color: var(--earth);
   font-weight: 300;
@@ -322,7 +322,7 @@ onUnmounted(() => {
 }
 
 .rate-label {
-  font-size: .62rem;
+  font-size: .67rem;
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -341,14 +341,14 @@ onUnmounted(() => {
 
 .rate-per {
   font-family: var(--ff-body), sans-serif;
-  font-size: .72rem;
+  font-size: .77rem;
   font-weight: 300;
   color: var(--earth);
   letter-spacing: .04em;
 }
 
 .rate-note {
-  font-size: .78rem;
+  font-size: .83rem;
   color: rgba(61,43,26,.5);
   font-weight: 300;
 }

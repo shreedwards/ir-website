@@ -247,7 +247,7 @@ function fmt(date) {
 }
 .av-dow span {
   text-align: center;
-  font-size: .52rem;
+  font-size: .57rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--earth);
@@ -267,7 +267,7 @@ function fmt(date) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .72rem;
+  font-size: .77rem;
   font-weight: 400;
   color: var(--bark);
   background: rgba(242,223,195,.18);
@@ -299,7 +299,7 @@ function fmt(date) {
 /* ── Error ───────────────────────────────────────────── */
 .av-error {
   margin-top: 18px;
-  font-size: .75rem;
+  font-size: .8rem;
   color: var(--clay);
   letter-spacing: .04em;
   text-align: center;
@@ -318,7 +318,7 @@ function fmt(date) {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: .6rem;
+  font-size: .65rem;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: rgba(61,43,26,.5);
@@ -343,7 +343,7 @@ function fmt(date) {
 
 @media (max-width: 600px) {
   .av-cal  { padding: 24px 16px 20px; }
-  .av-cell { font-size: .65rem; }
+  .av-cell { font-size: .7rem; }
   .av-nav  { width: 32px; height: 32px; font-size: 1.2rem; }
 }
 </style>
